@@ -13,10 +13,57 @@ div{
 	display: block;
 }
 
+body {
+}
+
 div#team {
-	width: 50%;
+	width: 65%;
+	margin: auto;
+	background-color: #0071b9;
+	color: #ffcb05;
+	font-size:19;
+	font-weight: 900;
+	padding:5px 10px;
+}
+
+div#team p {
+	text-align:center;
+}
+
+div#team_cards {
+	width: 60%;
+	margin: auto;
+	text-align: center;
+}
+
+div#team_cards .card {
+    display: inline-block;
+    text-align: center;
+    width: 40%;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px 0px;
+    font-size: 20px;
+}
+
+div#team_cards {
+	width: 65%;
+}
+
+div#team #eval {
+	background-color: white;
+	color: black;
+   width: 84px;
+   text-align: Center;
+   padding: 5px 5px 5px 5px;
    margin: auto;
-   background-color: #3366dd;
+   margin-bottom: 10px;
+   cursor: pointer;
+}
+
+div#team #eval:hover {
+	background-color: #dadada;
 }
 
 #team .pinput {
@@ -24,6 +71,7 @@ div#team {
   display: inline-block;
   padding: 5px 0 5px 0;
   text-align: center;
+  margin: 0 0 0 20px;
 }
 
 #stats2{
@@ -39,6 +87,7 @@ div#aggregate_table {
 div#aggregate_table table {
 	width: 960px;
 	border-collapse: collapse;
+	font-size: 22px
 }
 
 div#aggregate_table table td {
@@ -108,4 +157,6 @@ td.vulnerable.true.last {
 
 input {
 	margin: 6px 0 6px 5px;
+	padding: 5px 0 5px 5px;
+   font-size: 18px;
 }

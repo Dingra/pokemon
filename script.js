@@ -10,7 +10,7 @@ jQuery(document).ready(function(){
 		available_pokemon = JSON.parse(res);
 		
 		for(var i = 1; i <= 6; i ++) {
-			jQuery('#team').prepend("<div class = \"pinput\"><label for=\"p" + i + "\">Pokemon " + i + "<input id = \"p" + i + "\"/></div>");
+			jQuery('#team #team-inputs').append("<div class = \"pinput\"><label for=\"p" + i + "\">Pokemon " + i + "<input id = \"p" + i + "\"/></div>");
 			jQuery('#p' + i).autocomplete({
 				source: available_pokemon
 			});
