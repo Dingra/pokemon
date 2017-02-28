@@ -16,8 +16,6 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	
-	
 
 	$('td').attr('width', 100);
 	$('td').attr('align', 'center');
@@ -26,6 +24,7 @@ jQuery(document).ready(function(){
 		Add a new type to the database. This was used to set up early on
 	*/
 	jQuery("#addType").click(function(){
+		
 		var type = jQuery('#ptype').val();
 		var url = "ajax.php?method=addType&type=" + type;
 		//window.alert("URL = " + url);
@@ -110,32 +109,44 @@ jQuery(document).ready(function(){
 	});
 	
 	jQuery("#eval").click(function(){
-		types = getTypes();
-		console.log("Clicked");
-	
-		var url = "ajax.php?method=get_aggregate_matchups&team=";
-		
-		var team = new Array();
-		
-		for(var i = 1; i <= 6; i ++){
-			var selector = "#p" + i;
-			var pokemon = jQuery(selector).val()
-			
-			if(pokemon != "") {
-				team.push(pokemon.toLowerCase());
+		if(validate()){
+			var current_table = jQuery('div#aggregate_table table');
+			if(current_table) {
+				jQuery('div#aggregate_table table').remove();
 			}
-		}
+	
+			types = getTypes();
+	
+			var matchup_url = "ajax.php?method=get_aggregate_matchups&generation=6&team=";
+			var info_card_url = "ajax.php?method=get_card_info&generation=6&team=";
+			
+		
+			var team = new Array();
+		
+			for(var i = 1; i <= 6; i ++){
+				var selector = "#p" + i;
+				var pokemon = jQuery(selector).val()
+			
+				if(pokemon != "") {
+					team.push(pokemon);
+				}
+			}
 
 		
-		var t = JSON.stringify(team);
+			var t = JSON.stringify(team);
 		
-		url = url + t;
-		
-		console.log("Url is: " + url);
-		
-		ajaxCall(url, function(result) {
-			var table = build_table(result);
-		});		
+			matchup_url = matchup_url + t;
+			info_card_url = info_card_url + t;
+			
+			ajaxCall(matchup_url, function(result) {
+				table = build_table(result);
+			});
+			
+			ajaxCall(info_card_url, function(result) {
+				build_info_card(result);
+			});	
+			
+		} else alert("Failed!");
 	});
 	
 	$("#reset").click(function(){
@@ -143,21 +154,6 @@ jQuery(document).ready(function(){
 		removePokemon();
 	});
 });
-
-//Called by the reset button.  Removes all inputs apart from first pokemon from the team evaluator page
-function removePokemon(){
-	jQuery("#p2").hide();
-	jQuery("#p3").hide();
-	jQuery("#p4").hide();
-	jQuery("#p5").hide();
-	jQuery("#p6").hide();
-	
-	jQuery(".add").hide();
-	jQuery("#p2add").show();
-	
-	jQuery(".t1").append("<option value = 'none'>none</option>");
-	jQuery(".t1").val("none");
-}
 
 function findType(s){
 	var i;
@@ -179,7 +175,8 @@ function addTypeDamage(){
 }
 
 function build_table(matchups, generation) {
-	console.log(types);
+	
+	console.log("Build table is being called");
 	
 	var res = JSON.parse(matchups);
 	
@@ -200,6 +197,8 @@ function build_table(matchups, generation) {
 		current_type = types[i];
 		var resistant  = ""
 		var vulnerable = "";
+		
+		console.log("Res: " + res[current_type]);
 		
 		if((res[current_type][0.25] + res[current_type][0.5] + res[current_type][0]) >= 3) {
 			resistant = " true";
@@ -255,6 +254,39 @@ function build_table(matchups, generation) {
 	jQuery('#aggregate_table').append(aggregate_table);
 }
 
+function build_info_card(card_info) {
+	
+	info = JSON.parse(card_info);
+	
+	console.log("Testing: " + info[0]["name"]);
+	
+	var i = 0;
+	var pokemon_name, nat_dex_id, type1, type2;
+	while(info[i]) {
+		pokemon_name = info[i]["name"];
+		nat_dex_id = info[i]["natDexId"];
+		type1 = info[i]["type1"];
+		type2 = info[i]["type2"];
+		
+		
+		var type2_text = "";
+		if(type2) {
+			type_2_text = " Type 2: " + type2;
+		}
+		
+		var info_card = "<div class=\"card\"> " +
+			"<span class=\"number\">#" + nat_dex_id + "</span><br />" +
+			"<span class=\"name\">" + pokemon_name + "</span><br />" +
+			"<span class=\"type\">" + "Type 1: " + type1 + type2_text + "</span></div>";
+			
+		jQuery("div#team_cards").append(info_card);
+			
+		
+		console.log("Vars: " + pokemon_name + ", " + nat_dex_id + ", " + type1 + ", " + type2);
+		i++;
+	}
+}
+
 function keys(obj){
 	var str = "";
 
@@ -268,7 +300,6 @@ function keys(obj){
 }
 
 function getTypes() {
-	console.log("Getting types");
 	var turl = "ajax.php?method=getTypes";
 	ajaxCall (turl, function(result) {
 		var res = result.split(":");
@@ -283,4 +314,30 @@ function ajaxCall(url, f)
 		url:url, 
 		success:f
 	});
+}
+
+function validate() {
+	var i;
+	
+	for(i = 1; i <= 6; i ++) {
+		var selector = "#p" + i;
+		var currentPokemon = jQuery(selector).val();
+		if(currentPokemon != "" && !(inArray(currentPokemon, available_pokemon))) {
+			alert(currentPokemon + " is not a valid Pokemon in this generation");
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+function inArray(needle, haystack) {
+	var i;
+	for(i = 0; i < haystack.length; i ++) {
+		if(needle == haystack[i]) {
+			return true;
+		}
+	}
+	
+	return false;
 }

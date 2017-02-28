@@ -8,6 +8,9 @@
 	$combinedDamageLevels = array( 
 		0, .25, .5, 1, 2, 4
 	);
+	
+	//get_card_info(json_decode("[\"accelgor\",\"druddigon\",\"amoonguss\",\"ferroseed\",\"swanna\",\"cresselia\"]"), 6);
+		
 	//Add a new type $type to the database
 	function addType($type){
 		global $conn;
@@ -53,6 +56,7 @@
 	}
 	
 	/**
+
 		Returns an array containing the number of Pokemon that are weak against each type
 
 		$team: An array containing the names of Pokemon in the team being checked
@@ -189,7 +193,7 @@
 	function get_pokemon_names($generation) {
 		global $conn;
 		
-		$query = "SELECT `name` FROM `pokemon` WHERE `generation` >= ?";
+		$query = "SELECT `name` FROM pokemon WHERE `generation` <= ?";
 		if($get_pokemon_names = $conn->prepare($query)) {
 			$get_pokemon_names->bind_param("i", $generation);
 			$get_pokemon_names->execute();
@@ -207,6 +211,35 @@
 				echo var_dump($conn->error) . "<br/>";
 				return false;
 		}
+	}
+	
+	//Retrieve types and national dex ID for each Pokemon in $names in $generation
+	function get_card_info($team, $generation) {
+		global $conn;
+		
+		$ret_data = array();
+		
+		$counter = 0;
+		
+		foreach($team as $current_member) {
+			$query = "SELECT `natDexId`, `type1`, `type2` FROM pokemon WHERE `name` = ? AND `generation` <= ?";
+			if($get_card_info = $conn->prepare($query)) {
+				$get_card_info->bind_param("si", $current_member, $generation);
+				$get_card_info->execute();
+				$get_card_info->bind_result($id_res, $type1_res, $type2_res);
+			
+				while($get_card_info->fetch()) {
+					$ret_data[$counter]["name"] = $current_member;
+					$ret_data[$counter]["natDexId"] = $id_res;
+					$ret_data[$counter]["type1"] = $type1_res;
+					$ret_data[$counter]["type2"] = $type2_res;
+				}
+			}
+			$counter ++;
+		}		
+		
+		//echo var_dump($ret_data);
+		return $ret_data;	
 	}
 
 ?>

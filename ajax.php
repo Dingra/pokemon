@@ -46,7 +46,8 @@
 		case "get_aggregate_matchups":
 			global $conn;
 			$team = $_GET['team'];
-			$matchups = get_aggregate_matchups(json_decode($team), 6);
+			$generation = $_GET['generation'];
+			$matchups = get_aggregate_matchups(json_decode($team), $generation);
 			
 			echo json_encode($matchups);
 			break;
@@ -56,6 +57,19 @@
 			$generation = $_GET['generation'];
 			if($pokemon = get_pokemon_names($generation)) {
 				echo json_encode($pokemon);
+			} else {
+				echo "Nothing";
+			}
+			break;
+			
+		case "get_card_info":
+			global $conn;
+			$team = $_GET['team'];
+			$generation = $_GET['generation'];
+			if($card_info = get_card_info(json_decode($team), $generation)) {
+				echo json_encode($card_info);
+			} else {
+				echo "Could not retrieve card data<br />";
 			}
 			break;
 	}
