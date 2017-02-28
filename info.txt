@@ -1,0 +1,30 @@
+The Pokemon team evaluator was created to work with the handheld Pokemon games, originally for the Nintendo Gameboy and most recently on the Nintendo 3DS.
+
+In Pokemon, the player creates a team of creatures called Pokemon. Among other things, each Pokemon has one or two out of 18 types and up to four moves which also have one of those 18 types. When a Pokemon uses a move on another Pokemon, the effectiveness of that move depends on the type of moved used and the type of Pokemon being hit.
+
+For example, Rock type Pokemon are weak against water type attacks, so if a Pokemon uses a water type attack against a Rock type Pokemon, that move is "Super Effective" and will inflict double damage.
+
+Grass type Pokemon, on the other hand, are strong against water type attacks, so a water move used on a Grass Pokemon will be "Not very effective" and the damage will be halved.
+
+When a Pokemon is hit by a move, both of its types are taken into consideration. For example, Electric attacks are "Not very effective" against Electric type pokemon, but they are "Super Effective against Water type Pokemon. So if a Pokemon with both water and electric type attacks is hit by an electric type move, the move will just inflict normal damage.
+
+On the other hand, if a pokemon has two types that are weak against the incoming attack, it will still be "Super Effective" but inflict quadruple damage. The same is true for attacks that are "Not very effective".
+
+If a Pokemon is hit by a move that is Super Effective against one type but Not Very Effective against another, they will cancel out and do normal damage.
+
+Finally, some types are completely ineffecitve against others and do no damage, such as Electric attacks against Ground Pokemon. If a Pokemon has a type that is not effected by an incoming attack, its other type is irrelevant and the Pokemon will take no damage.
+
+The point of the team evaluator is to find out how many Pokemon are in a given team which are weak against each type. Users may add up to six Pokemon(the size of a typical team) and find out how many Pokemon they have that are weak against a particular type. For example, if a user has four Pokemon that are weak against Fighting type moves, he/she may want to consider making some changes to his/her team.
+
+FUTURE WORK:
+--Allow the user to select different generations of Pokemon. Currently the user may only evaluate a team from the two most recent generations
+
+--Add alternate forms for Pokemon. Some Pokemon have different forms which have different types, most notably in the recent Sun and Moon games that came out. Users currently aren't able to select these alternate forms
+
+--Clean up the front end design
+
+--Add graphics
+
+--Add stats to the game. In addition to having types, Pokemon also have stats such as attack and defense. Currently the app doesn't store these stats or use them in any way
+
+--Add loads of functionality to the site. This is all theoretical and would take too much to explain.

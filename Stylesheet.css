@@ -1,0 +1,111 @@
+#header{
+	width:100%;
+	height:150px;
+	background-color: #555555;
+	position: relative;
+	border-top-left-radius:10%;
+	border-top-right-radius:10%;
+	top:-10px;
+	position:relative;
+}
+
+div{
+	display: block;
+}
+
+div#team {
+	width: 50%;
+   margin: auto;
+   background-color: #3366dd;
+}
+
+#team .pinput {
+  width: 45%;
+  display: inline-block;
+  padding: 5px 0 5px 0;
+  text-align: center;
+}
+
+#stats2{
+	margin:10px;
+	float: left;
+}
+
+div#aggregate_table {
+	width: 960px;
+   margin: auto;
+}
+
+div#aggregate_table table {
+	width: 960px;
+	border-collapse: collapse;
+}
+
+div#aggregate_table table td {
+	text-align: center;
+	width: 4%;
+	padding: 5px 2px;
+}
+
+div#aggregate_table table td.blank {
+	background: white;
+}
+
+div#aggregate_table table td.type {
+	text-align: left;
+	width: 55px;
+	padding-left:1%;
+}
+
+div#aggregate_table table tr {
+	background: #b8b8b8;
+}
+
+div#aggregate_table table tr.even {
+	background: #9b9b9b;
+}
+
+#logo{
+	position:relative;
+	margin-left:37%;
+	margin-bottom:-35px;
+}
+
+#about{
+	border-radius:5%;
+	background-color: #999999;
+	width: 700px;
+	height: 200px;
+	float: right;
+	padding: 4px;
+}
+
+td.resistant.true {
+	border: 2px solid green;
+	border-left: none;
+	border-right: none;
+}
+
+td.resistant.true.first {
+	border-left: 2px solid green;
+}
+
+td.resistant.true.last {
+	border-right: 2px solid green;
+}
+
+td.vulnerable.true {
+	border: 2px solid red;
+}
+
+td.vulnerable.true.first {
+	border-right: none;
+}
+
+td.vulnerable.true.last {
+	border-left: none;
+}
+
+input {
+	margin: 6px 0 6px 5px;
+}
