@@ -137,10 +137,10 @@ jQuery(document).ready(function(){
 			}
 
 		
-			var t = JSON.stringify(team);
+			var t = JSON.stringify(team);		
 		
 			matchup_url = matchup_url + t;
-			info_card_url = info_card_url + t;
+			info_card_url = info_card_url + t;		
 			
 			ajaxCall(matchup_url, function(result) {
 				table = build_table(result);
@@ -329,6 +329,7 @@ function build_table_responsive(matchups, generation) {
 	jQuery('#aggregate_table').append(aggregate_table);
 }
 
+//Contains basic info on each Pokemon on the team
 function build_info_card(card_info) {
 	info = JSON.parse(card_info);
 	
@@ -350,7 +351,7 @@ function build_info_card(card_info) {
 		var info_card = "<div class=\"card\"> " +
 			"<span class=\"number\">#" + nat_dex_id + "</span><br />" +
 			"<span class=\"name\">" + pokemon_name + "</span><br />" +
-			"<span class=\"type\">" + "Type 1: " + type1 + type2_text + "</span></div>";
+			"<span class=\"type\">" + "Type 1: " + type1 + "</span><br /><span>" + type_2_text + "</span></div>";
 			
 		jQuery("div#team_cards").append(info_card);
 		i++;
@@ -386,6 +387,7 @@ function ajaxCall(url, f)
 	});
 }
 
+//Ensure that only Pokemon chosen from the drop downs are valid
 function validate() {
 	var i;
 	
