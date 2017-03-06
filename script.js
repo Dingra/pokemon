@@ -4,7 +4,7 @@ var available_pokemon;
 jQuery(document).ready(function(){
 	
 	//Get all Pokemon in generation 6 and earlier and add them to the auto complete
-	var p_url = "ajax.php?method=get_pokemon_names&generation=6";
+	var p_url = "ajax.php?method=get_pokemon_names&generation=7";
 	ajaxCall (p_url, function(result) {
 		var res = result.split(":");
 		available_pokemon = JSON.parse(res);
@@ -114,11 +114,15 @@ jQuery(document).ready(function(){
 			if(current_table) {
 				jQuery('div#aggregate_table table').remove();
 			}
+						
+			if(jQuery("div.card")) {
+				jQuery("div.card").remove();
+			}		
 	
 			types = getTypes();
 	
-			var matchup_url = "ajax.php?method=get_aggregate_matchups&generation=6&team=";
-			var info_card_url = "ajax.php?method=get_card_info&generation=6&team=";
+			var matchup_url = "ajax.php?method=get_aggregate_matchups&generation=7&team=";
+			var info_card_url = "ajax.php?method=get_card_info&generation=7&team=";
 			
 		
 			var team = new Array();
@@ -140,6 +144,7 @@ jQuery(document).ready(function(){
 			
 			ajaxCall(matchup_url, function(result) {
 				table = build_table(result);
+				build_table_responsive(result);
 			});
 			
 			ajaxCall(info_card_url, function(result) {
@@ -176,20 +181,17 @@ function addTypeDamage(){
 
 function build_table(matchups, generation) {
 	
-	console.log("Build table is being called");
-	
 	var res = JSON.parse(matchups);
 	
 	var damage_levels = Array(
 		0,
 		0.25,
 		0.5,
-		1,
 		2,
 		4
 	);
 	
-	var aggregate_table = "<table><tr><td></td><td>0</td><td>0.25</td><td>0.5</td><td>1</td><td>2</td><td>4</td><td class=\"blank\"></td><td></td><td>0</td><td>0.25</td><td>0.5</td><td>1</td><td>2</td><td>4</td></tr>";
+	var aggregate_table = "<table><tr><td></td><td>0</td><td>0.25</td><td>0.5</td><td>2</td><td>4</td><td class=\"blank\"></td><td></td><td>0</td><td>0.25</td><td>0.5</td><td>2</td><td>4</td></tr>";
 
 	var i,j ;
 
@@ -197,8 +199,6 @@ function build_table(matchups, generation) {
 		current_type = types[i];
 		var resistant  = ""
 		var vulnerable = "";
-		
-		console.log("Res: " + res[current_type]);
 		
 		if((res[current_type][0.25] + res[current_type][0.5] + res[current_type][0]) >= 3) {
 			resistant = " true";
@@ -232,9 +232,84 @@ function build_table(matchups, generation) {
 					td_class += " first";
 				}
 				
-			} else if (j == 4) {
+			} else if (j == 3) {
 				td_class = "vulnerable first" + vulnerable;
-			} else if (j == 5){
+			} else if (j == 4){
+				td_class = "vulnerable last" + vulnerable;
+				
+			}			
+			 else {
+				td_class = "";
+			}
+			aggregate_table = aggregate_table + "<td " + "class=\"" + td_class + "\">" + res[current_type][damage_levels[j]] + "</td>";
+		}
+		
+		if(i % 2 != 0) {
+			aggregate_table = aggregate_table + "</tr>";
+		}
+	}
+
+	aggregate_table = aggregate_table + "</table>";
+	
+	jQuery('#aggregate_table').append(aggregate_table);
+}
+
+
+function build_table_responsive(matchups, generation) {
+	
+	var res = JSON.parse(matchups);
+	
+	var damage_levels = Array(
+		0,
+		0.25,
+		0.5,
+		2,
+		4
+	);
+	
+	var aggregate_table = "<table class=\"responsive\"><tr><td></td><td>0</td><td>0.25</td><td>0.5</td><td>2</td><td>4</td></tr>";
+
+	var i,j ;
+
+	for (i = 0; i < types.length; i ++) {
+		current_type = types[i];
+		var resistant  = ""
+		var vulnerable = "";
+		
+		//Count the number of Pokemon for whom the attacking type is "Not very effective" or ineffective
+		if((res[current_type][0.25] + res[current_type][0.5] + res[current_type][0]) >= 3) {
+			resistant = " true";
+		}
+		
+		//Count the number of Pokemon for whom the attacking type is "Super Effective"
+		if(res[current_type][2] + res[current_type][4] >= 3) {
+			vulnerable = " true";
+		}		
+		
+		//Add the "even" class so that the table rows can alternate between lighter and darker gray
+		if(i % 2 == 0) {
+			tr_class = " class = \"even\"";
+		} else {
+			tr_class = "";
+		}
+		
+		aggregate_table = aggregate_table + "<tr" + tr_class + "><td class=\"type\">" + current_type + "</td>";
+		
+		for(j = 0; j < damage_levels.length; j ++) {
+			var td_class;
+			
+			if(j <= 2){
+				td_class = "resistant" + resistant;
+				
+				if(j == 2) {
+					td_class += " last";
+				} else if(j == 0) {
+					td_class += " first";
+				}
+				
+			} else if (j == 3) {
+				td_class = "vulnerable first" + vulnerable;
+			} else if (j == 4){
 				td_class = "vulnerable last" + vulnerable;
 				
 			}			
@@ -255,14 +330,12 @@ function build_table(matchups, generation) {
 }
 
 function build_info_card(card_info) {
-	
 	info = JSON.parse(card_info);
 	
-	console.log("Testing: " + info[0]["name"]);
 	
 	var i = 0;
 	var pokemon_name, nat_dex_id, type1, type2;
-	while(info[i]) {
+	while(info[i]) {		
 		pokemon_name = info[i]["name"];
 		nat_dex_id = info[i]["natDexId"];
 		type1 = info[i]["type1"];
@@ -280,9 +353,6 @@ function build_info_card(card_info) {
 			"<span class=\"type\">" + "Type 1: " + type1 + type2_text + "</span></div>";
 			
 		jQuery("div#team_cards").append(info_card);
-			
-		
-		console.log("Vars: " + pokemon_name + ", " + nat_dex_id + ", " + type1 + ", " + type2);
 		i++;
 	}
 }

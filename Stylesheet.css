@@ -31,6 +31,7 @@ div#team p {
 }
 
 div#team_cards {
+	max-width: 960px;
 	width: 60%;
 	margin: auto;
 	text-align: center;
@@ -80,14 +81,18 @@ div#team #eval:hover {
 }
 
 div#aggregate_table {
-	width: 960px;
+	max-width: 960px;
+	width: 90%;
    margin: auto;
 }
 
 div#aggregate_table table {
-	width: 960px;
 	border-collapse: collapse;
 	font-size: 22px
+}
+
+div#aggregate_table table.responsive {
+	display:none;
 }
 
 div#aggregate_table table td {
@@ -160,3 +165,51 @@ input {
 	padding: 5px 0 5px 5px;
    font-size: 18px;
 }
+
+@media only screen and (max-width:860px) {
+	#team div.pinput {
+		display: block;
+		margin: auto;
+		width: 80%
+	}
+	
+	#team div.pinput input {
+		width: 85%;
+	}
+}
+
+@media only screen and (max-width:700px) {
+	div#aggregate_table table.responsive {
+		display:block;
+	}
+	
+	div#aggregate_table table {
+		display:none;
+	}
+}
+
+@media only screen and (max-width:550px) {
+	div#team_cards .card {
+		width:95%;
+		display:block;
+	}
+}
+
+@media only screen and (max-width:475px) {
+	#team div.pinput {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width:375px) {
+	div#team {
+		width: 100%;
+	}
+}
+
+
+
+
+
+
+
