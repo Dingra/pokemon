@@ -210,7 +210,8 @@ input {
 
 @media only screen and (max-width:375px) {
 	div#team {
-		width: 100%;
+		width: 96%;
+		padding: 5px 2%;
 	}
 	
 	body {
