@@ -352,12 +352,14 @@ function build_info_card(card_info) {
 		var type_2_text = "";
 		if(type2) {
 			type_2_text = " Type 2: " + type2;
+		} else {
+			type_2_text = "<br />";
 		}
 		
 		var info_card = "<div class=\"card\"> " +
 			"<span class=\"number\">#" + nat_dex_id + "</span><br />" +
 			"<span class=\"name\">" + pokemon_name + "</span><br />" +
-			"<span class=\"type\">" + "Type 1: " + type1 + "</span><br /><span>" + type_2_text + "</span></div>";
+			"<span class=\"type\">" + "Type 1: " + type1 + "</span><br /><span>" + type_2_text + " </span></div>";
 			
 		$("div#team_cards").append(info_card);
 		i++;
