@@ -146,7 +146,7 @@
 		
 		//Look at all types and see how each one matches up to the current type in the current generation
 		foreach($types as $current_type) {
-			$multiplier_query = "select `multiplier` from `matchup` where `attacker` = ? and `defender` = ? and `generation` = ?";
+			$multiplier_query = "select `multiplier` from `matchup` where `attacker` = ? and `defender` = ? and `generation` <= ?";
 			if($get_multipliers = $conn->prepare($multiplier_query)) {
 				$get_multipliers->bind_param("ssi", $current_type, $type, $generation);
 				$get_multipliers->execute();
@@ -193,7 +193,7 @@
 	function get_pokemon_names($generation) {
 		global $conn;
 		
-		$query = "SELECT `name` FROM pokemon WHERE `generation` <= ?";
+		$query = "SELECT `name` FROM pokemon WHERE `generation` = ?";
 		if($get_pokemon_names = $conn->prepare($query)) {
 			$get_pokemon_names->bind_param("i", $generation);
 			$get_pokemon_names->execute();

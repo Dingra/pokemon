@@ -10,8 +10,8 @@ jQuery(document).ready(function(){
 		available_pokemon = JSON.parse(res);
 		
 		for(var i = 1; i <= 6; i ++) {
-			jQuery('#team #team-inputs').append("<div class = \"pinput\"><label for=\"p" + i + "\">Pokemon " + i + "<input id = \"p" + i + "\"/></div>");
-			jQuery('#p' + i).autocomplete({
+			$('#team #team-inputs').append("<div class = \"pinput\"><label for=\"p" + i + "\">Pokemon " + i + "<input id = \"p" + i + "\"/></div>");
+			$('#p' + i).autocomplete({
 				source: available_pokemon
 			});
 		}
@@ -23,9 +23,9 @@ jQuery(document).ready(function(){
 	/**
 		Add a new type to the database. This was used to set up early on
 	*/
-	jQuery("#addType").click(function(){
+	$("#addType").click(function(){
 		
-		var type = jQuery('#ptype').val();
+		var type = $('#ptype').val();
 		var url = "ajax.php?method=addType&type=" + type;
 		//window.alert("URL = " + url);
 		ajaxCall (url, function(result) {
@@ -39,8 +39,8 @@ jQuery(document).ready(function(){
 		});
 	});
 	
-	jQuery("#addType").click(function(){
-		var type = jQuery('#ptype').val();
+	$("#addType").click(function(){
+		var type = $('#ptype').val();
 		var url = "ajax.php?method=addType&type=" + type;
 		
 		ajaxCall (url, function(result) {
@@ -54,11 +54,11 @@ jQuery(document).ready(function(){
 	});
 	
 	//Add an attacking and defending type to the database where the attack is "Super Effective"
-	jQuery("#addStrength").click(function(){
+	$("#addStrength").click(function(){
 		alert("Function called");
-		var att = jQuery('#attacker').val();
-		var def = jQuery('#defender').val();
-		var gen = jQuery('#generation').val();
+		var att = $('#attacker').val();
+		var def = $('#defender').val();
+		var gen = $('#generation').val();
 		var url = "ajax.php?method=addStrength&attacker=" + att + "&defender=" + def + "&generation=" + gen;
 		
 		ajaxCall (url, function(result) {
@@ -72,10 +72,10 @@ jQuery(document).ready(function(){
 	});
 	
 	//Add an attacking and defending type to the database where the attack is "Not very effective" or ineffective
-	jQuery("#addWeakness").click(function(){
-		var att = jQuery('#attacker').val();
-		var def = jQuery('#defender').val();
-		var gen = jQuery('#generation').val();
+	$("#addWeakness").click(function(){
+		var att = $('#attacker').val();
+		var def = $('#defender').val();
+		var gen = $('#generation').val();
 		var url = "ajax.php?method=addWeakness&attacker=" + att + "&defender=" + def + "&generation=" + gen;
 		
 		if(document.getElementById("ineffective").checked == true)
@@ -96,7 +96,7 @@ jQuery(document).ready(function(){
 		});
 	});
 	
-	jQuery("#getMatchups").click(function(){
+	$("#getMatchups").click(function(){
 		var url = "ajax.php?method=getMatchups&type1=fire&type2=flying";
 		
 		ajaxCall(url, function(result) {
@@ -108,15 +108,16 @@ jQuery(document).ready(function(){
 		});
 	});
 	
-	jQuery("#eval").click(function(){
+	$("#eval").click(function(){
 		if(validate()){
-			var current_table = jQuery('div#aggregate_table table');
+			$("#team-inputs").slideToggle('slow');
+			var current_table = $('div#aggregate_table table');
 			if(current_table) {
-				jQuery('div#aggregate_table table').remove();
+				$('div#aggregate_table table').remove();
 			}
 						
-			if(jQuery("div.card")) {
-				jQuery("div.card").remove();
+			if($("div.card")) {
+				$("div.card").remove();
 			}		
 	
 			types = getTypes();
@@ -129,7 +130,7 @@ jQuery(document).ready(function(){
 		
 			for(var i = 1; i <= 6; i ++){
 				var selector = "#p" + i;
-				var pokemon = jQuery(selector).val()
+				var pokemon = $(selector).val()
 			
 				if(pokemon != "") {
 					team.push(pokemon);
@@ -158,7 +159,12 @@ jQuery(document).ready(function(){
 		reset();
 		removePokemon();
 	});
+	
+	$("p.explain").click(function(){
+		$("#team-inputs").slideToggle('slow');
+	});
 });
+
 
 function findType(s){
 	var i;
@@ -251,7 +257,7 @@ function build_table(matchups, generation) {
 
 	aggregate_table = aggregate_table + "</table>";
 	
-	jQuery('#aggregate_table').append(aggregate_table);
+	$('#aggregate_table').append(aggregate_table);
 }
 
 
@@ -326,7 +332,7 @@ function build_table_responsive(matchups, generation) {
 
 	aggregate_table = aggregate_table + "</table>";
 	
-	jQuery('#aggregate_table').append(aggregate_table);
+	$('#aggregate_table').append(aggregate_table);
 }
 
 //Contains basic info on each Pokemon on the team
@@ -343,7 +349,7 @@ function build_info_card(card_info) {
 		type2 = info[i]["type2"];
 		
 		
-		var type2_text = "";
+		var type_2_text = "";
 		if(type2) {
 			type_2_text = " Type 2: " + type2;
 		}
@@ -353,7 +359,7 @@ function build_info_card(card_info) {
 			"<span class=\"name\">" + pokemon_name + "</span><br />" +
 			"<span class=\"type\">" + "Type 1: " + type1 + "</span><br /><span>" + type_2_text + "</span></div>";
 			
-		jQuery("div#team_cards").append(info_card);
+		$("div#team_cards").append(info_card);
 		i++;
 	}
 }
@@ -381,7 +387,7 @@ function getTypes() {
 
 function ajaxCall(url, f)
 {
-	jQuery.ajax({
+	$.ajax({
 		url:url, 
 		success:f
 	});
@@ -393,7 +399,7 @@ function validate() {
 	
 	for(i = 1; i <= 6; i ++) {
 		var selector = "#p" + i;
-		var currentPokemon = jQuery(selector).val();
+		var currentPokemon = $(selector).val();
 		if(currentPokemon != "" && !(inArray(currentPokemon, available_pokemon))) {
 			alert(currentPokemon + " is not a valid Pokemon in this generation");
 			return false;

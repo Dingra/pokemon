@@ -57,7 +57,7 @@ div#team #eval {
 	color: black;
    width: 84px;
    text-align: Center;
-   padding: 5px 5px 5px 5px;
+   padding: 10px;
    margin: auto;
    margin-bottom: 10px;
    cursor: pointer;
@@ -189,9 +189,16 @@ input {
 }
 
 @media only screen and (max-width:550px) {
+	div#team_cards {
+		width:100%;
+	}	
+	
 	div#team_cards .card {
-		width:95%;
-		display:block;
+		font-size:16px;
+	}
+	
+	div#aggregate_table table td {
+		font-size:16px;
 	}
 }
 
@@ -204,6 +211,10 @@ input {
 @media only screen and (max-width:375px) {
 	div#team {
 		width: 100%;
+	}
+	
+	body {
+		margin: 0;
 	}
 }
 
