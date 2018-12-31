@@ -2,10 +2,11 @@ var types;				//All Pokemon types
 var available_pokemon;
 
 jQuery(document).ready(function(){
-	
+	console.log("Console log works");
 	//Get all Pokemon in generation 6 and earlier and add them to the auto complete
 	var p_url = "ajax.php?method=get_pokemon_names&generation=7";
 	ajaxCall (p_url, function(result) {
+		console.log("Result: " + res);
 		var res = result.split(":");
 		available_pokemon = JSON.parse(res);
 		
@@ -141,7 +142,8 @@ jQuery(document).ready(function(){
 			var t = JSON.stringify(team);		
 		
 			matchup_url = matchup_url + t;
-			info_card_url = info_card_url + t;		
+			info_card_url = info_card_url + t;
+      console.log("The url: " + matchup_url);
 			
 			ajaxCall(matchup_url, function(result) {
 				table = build_table(result);
